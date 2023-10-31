@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "strip_block",
+	"version": "${version}",
+	"name": "Strip Block",
+	"description": "Tired of stripping the wood blocks manually? This one block, will strip any wood for you.",
+	"authors": [
+		"Jiraiyah"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/strip_block/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"jiraiyah.stripblock.StripBlock"
+		],
+		"client": [
+			"jiraiyah.stripblock.StripBlockClient"
+		],
+		"fabric-datagen": [
+			"jiraiyah.stripblock.StripBlockDataGenerator"
+		]
+	},
+	"mixins": [
+		"strip_block.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.24",
+		"minecraft": "~1.20.2",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
