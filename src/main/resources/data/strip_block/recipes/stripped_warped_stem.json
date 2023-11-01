@@ -1,0 +1,12 @@
+{
+  "type": "strip_block:wood_stripping",
+  "ingredients": [
+    {
+      "item": "minecraft:warped_stem"
+    }
+  ],
+  "output": {
+    "item": "minecraft:stripped_warped_stem",
+    "count": 1
+  }
+}

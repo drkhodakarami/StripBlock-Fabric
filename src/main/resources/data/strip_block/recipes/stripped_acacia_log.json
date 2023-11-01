@@ -1,0 +1,12 @@
+{
+  "type": "strip_block:wood_stripping",
+  "ingredients": [
+    {
+      "item": "minecraft:acacia_log"
+    }
+  ],
+  "output": {
+    "item": "minecraft:stripped_acacia_log",
+    "count": 1
+  }
+}

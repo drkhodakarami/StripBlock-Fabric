@@ -18,7 +18,7 @@ import net.minecraft.util.Identifier;
 public class ModBlocks
 {
     public static final Block STRIPPER_BLOCK = registerBlock("stripper_block",
-            new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK)));
+            new StripperBlock(FabricBlockSettings.copyOf(Blocks.OAK_WOOD).requiresTool()));
 
     private static Block registerBlock(String name, Block block)
     {

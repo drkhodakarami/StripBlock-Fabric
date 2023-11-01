@@ -1,0 +1,12 @@
+{
+  "type": "strip_block:wood_stripping",
+  "ingredients": [
+    {
+      "item": "minecraft:dark_oak_log"
+    }
+  ],
+  "output": {
+    "item": "minecraft:stripped_dark_oak_log",
+    "count": 1
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "strip_block:wood_stripping",
+  "ingredients": [
+    {
+      "item": "minecraft:bamboo_block"
+    }
+  ],
+  "output": {
+    "item": "minecraft:stripped_bamboo_block",
+    "count": 1
+  }
+}

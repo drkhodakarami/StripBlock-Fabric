@@ -1,3 +1,5 @@
 {
-  "block.strip_block.stripper_block": "Wood Stripper"
+  "block.strip_block.stripper_block": "Wood Stripper",
+  "strip_block.strip_block_entity": "Stripper Block",
+  "strip_block.wood_stripping": "Wood Stripping Station"
 }

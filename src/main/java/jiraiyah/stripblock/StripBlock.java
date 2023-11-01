@@ -1,8 +1,11 @@
 package jiraiyah.stripblock;
 
 import jiraiyah.stripblock.block.ModBlocks;
+import jiraiyah.stripblock.block.entity.ModBlockEntities;
 import jiraiyah.stripblock.item.ModItemGroups;
 import jiraiyah.stripblock.item.ModItems;
+import jiraiyah.stripblock.recipe.ModRecipes;
+import jiraiyah.stripblock.screen.ModScreenHandlers;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -21,5 +24,8 @@ public class StripBlock implements ModInitializer
 		ModItemGroups.register();
 		ModItems.register();
 		ModBlocks.register();
+		ModBlockEntities.register();
+		ModScreenHandlers.register();
+		ModRecipes.register();
 	}
 }

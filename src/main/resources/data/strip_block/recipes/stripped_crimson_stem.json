@@ -1,0 +1,12 @@
+{
+  "type": "strip_block:wood_stripping",
+  "ingredients": [
+    {
+      "item": "minecraft:crimson_stem"
+    }
+  ],
+  "output": {
+    "item": "minecraft:stripped_crimson_stem",
+    "count": 1
+  }
+}

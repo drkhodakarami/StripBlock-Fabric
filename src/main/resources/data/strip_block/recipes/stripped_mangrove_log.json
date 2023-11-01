@@ -1,0 +1,12 @@
+{
+  "type": "strip_block:wood_stripping",
+  "ingredients": [
+    {
+      "item": "minecraft:mangrove_log"
+    }
+  ],
+  "output": {
+    "item": "minecraft:stripped_mangrove_log",
+    "count": 1
+  }
+}

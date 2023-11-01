@@ -1,0 +1,12 @@
+{
+  "type": "strip_block:wood_stripping",
+  "ingredients": [
+    {
+      "item": "minecraft:cherry_log"
+    }
+  ],
+  "output": {
+    "item": "minecraft:stripped_cherry_log",
+    "count": 1
+  }
+}
