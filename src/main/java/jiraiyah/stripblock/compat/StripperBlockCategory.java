@@ -17,15 +17,18 @@ import net.minecraft.util.Identifier;
 import java.util.LinkedList;
 import java.util.List;
 
+import static jiraiyah.stripblock.Reference.ModID;
+import static jiraiyah.stripblock.Reference.identifier;
+
 // Done with the help :
 // https://github.com/TeamGalacticraft/Galacticraft/tree/main (MIT License)
 public class StripperBlockCategory implements DisplayCategory<BasicDisplay>
 {
     public static final Identifier TEXTURE =
-            new Identifier(StripBlock.ModID, "textures/gui/stripper_gui.png");
+            identifier("textures/gui/stripper_gui.png");
 
     public static final CategoryIdentifier<StripperBlockDisplay> WOOD_STRIPPING =
-            CategoryIdentifier.of(StripBlock.ModID, "wood_stripping");
+            CategoryIdentifier.of(ModID, "wood_stripping");
 
     @Override
     public CategoryIdentifier<? extends BasicDisplay> getCategoryIdentifier()

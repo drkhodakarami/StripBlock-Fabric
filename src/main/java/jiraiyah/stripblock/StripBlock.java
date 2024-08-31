@@ -11,15 +11,16 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static jiraiyah.stripblock.Reference.ModID;
+import static jiraiyah.stripblock.Reference.log;
+
 public class StripBlock implements ModInitializer
 {
-	public static final String ModID = "strip_block";
-	public static final Logger LOGGER = LoggerFactory.getLogger(ModID);
 
 	@Override
 	public void onInitialize()
 	{
-		LOGGER.info(">>> Initializing : " + ModID);
+		log(">>> Initializing : " + ModID);
 
 		ModItemGroups.register();
 		ModItems.register();

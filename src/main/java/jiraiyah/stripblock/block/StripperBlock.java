@@ -1,5 +1,6 @@
 package jiraiyah.stripblock.block;
 
+import com.mojang.serialization.MapCodec;
 import jiraiyah.stripblock.block.entity.ModBlockEntities;
 import jiraiyah.stripblock.block.entity.StripperBlockEntity;
 import net.minecraft.block.*;
@@ -11,7 +12,6 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -22,6 +22,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class StripperBlock extends BlockWithEntity implements BlockEntityProvider
 {
+    public static final MapCodec<StripperBlock> CODEC = createCodec(StripperBlock::new);
+
     private static final VoxelShape SHAPE = Block.createCuboidShape(0, 0, 0, 16, 16, 16);
 
     public StripperBlock(Settings settings)
@@ -30,7 +32,13 @@ public class StripperBlock extends BlockWithEntity implements BlockEntityProvide
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit)
+    protected MapCodec<? extends BlockWithEntity> getCodec()
+    {
+        return CODEC;
+    }
+
+    @Override
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit)
     {
         world.playSound(player, pos, SoundEvents.BLOCK_CHERRY_WOOD_STEP, SoundCategory.BLOCKS, 1f, 1f);
         if (!world.isClient)

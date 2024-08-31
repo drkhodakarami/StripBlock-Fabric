@@ -29,7 +29,7 @@ public class StripperBlockDisplay  extends BasicDisplay
     {
         if(recipe == null) return Collections.emptyList();
         List<EntryIngredient> list = new ArrayList<>();
-        list.add(EntryIngredients.ofIngredient(recipe.getIngredients().get(0)));
+        list.add(EntryIngredients.ofIngredient(recipe.getIngredients().getFirst()));
         return list;
     }
 

@@ -2,12 +2,16 @@ package jiraiyah.stripblock.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.*;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
@@ -31,11 +35,11 @@ public class StripperBlockRecipe implements Recipe<SimpleInventory>
         if(world.isClient)
             return false;
         // recipeItem index is coming from the list in the json file, the inventory index one, is coming from the slot in the gui
-        return recipeItems.get(0).test(inventory.getStack(0));
+        return recipeItems.getFirst().test(inventory.getStack(0));
     }
 
     @Override
-    public ItemStack craft(SimpleInventory inventory, DynamicRegistryManager registryManager)
+    public ItemStack craft(SimpleInventory input, RegistryWrapper.WrapperLookup lookup)
     {
         return output;
     }
@@ -47,7 +51,7 @@ public class StripperBlockRecipe implements Recipe<SimpleInventory>
     }
 
     @Override
-    public ItemStack getResult(DynamicRegistryManager registryManager)
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup)
     {
         return output;
     }
@@ -84,7 +88,7 @@ public class StripperBlockRecipe implements Recipe<SimpleInventory>
         public static final String ID = "wood_stripping";
 
         // A codec is a way to read a json file and convert it to a class on the fly
-        public static final Codec<StripperBlockRecipe> CODEC = RecordCodecBuilder.create(in ->
+        public static final MapCodec<StripperBlockRecipe> CODEC = RecordCodecBuilder.create(in ->
                 in.group(
                     validateAmount(Ingredient.DISALLOW_EMPTY_CODEC, 9).fieldOf("ingredients").forGetter(StripperBlockRecipe::getIngredients),
                     RecipeCodecs.CRAFTING_RESULT.fieldOf("output").forGetter(r -> r.output)
@@ -98,9 +102,15 @@ public class StripperBlockRecipe implements Recipe<SimpleInventory>
         }
 
         @Override
-        public Codec<StripperBlockRecipe> codec()
+        public MapCodec<StripperBlockRecipe> codec()
         {
             return CODEC;
+        }
+
+        @Override
+        public PacketCodec<RegistryByteBuf, StripperBlockRecipe> packetCodec()
+        {
+            return null;
         }
 
         @Override

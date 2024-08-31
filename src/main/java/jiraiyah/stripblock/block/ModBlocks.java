@@ -1,8 +1,5 @@
 package jiraiyah.stripblock.block;
 
-import jiraiyah.stripblock.StripBlock;
-import jiraiyah.stripblock.item.ModItems;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -13,7 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+
+import static jiraiyah.stripblock.Reference.*;
 
 public class ModBlocks
 {
@@ -23,13 +21,13 @@ public class ModBlocks
     private static Block registerBlock(String name, Block block)
     {
         registerBlockItem(name, block);
-        return Registry.register(Registries.BLOCK, new Identifier(StripBlock.ModID, name), block);
+        return Registry.register(Registries.BLOCK, identifier(name), block);
     }
 
     private static Item registerBlockItem(String name, Block block)
     {
-        return Registry.register(Registries.ITEM, new Identifier(StripBlock.ModID, name),
-                new BlockItem(block, new FabricItemSettings()));
+        return Registry.register(Registries.ITEM, identifier(name),
+                new BlockItem(block, new Item.Settings()));
     }
 
     private static void addItemsToFunctionalItemGroup(FabricItemGroupEntries entries)
@@ -39,7 +37,7 @@ public class ModBlocks
 
     public static void register()
     {
-        StripBlock.LOGGER.info(">>> Registering Blocks for : " + StripBlock.ModID);
+        logN(">>> Registering Blocks for : " + ModID);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(ModBlocks::addItemsToFunctionalItemGroup);
     }

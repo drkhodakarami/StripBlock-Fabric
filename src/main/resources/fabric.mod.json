@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/drkhodakarami/StripBlock-Fabric"
 	},
 	"license": "MIT",
 	"icon": "assets/strip_block/icon.png",
@@ -18,23 +18,20 @@
 		"main": [
 			"jiraiyah.stripblock.StripBlock"
 		],
-		"client": [
-			"jiraiyah.stripblock.StripBlockClient"
-		],
 		"fabric-datagen": [
 			"jiraiyah.stripblock.StripBlockDataGenerator"
+		],
+		"client": [
+			"jiraiyah.stripblock.StripBlockClient"
 		],
 		"rei_client": [
 			"jiraiyah.stripblock.compat.StripBlockREIClientPlugin"
 		]
 	},
-	"mixins": [
-		"strip_block.mixins.json"
-	],
 	"depends": {
-		"fabricloader": ">=0.14.24",
-		"minecraft": "~1.20.2",
-		"java": ">=17",
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
 		"fabric-api": "*"
 	},
 	"suggests": {

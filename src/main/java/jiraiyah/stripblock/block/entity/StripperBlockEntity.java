@@ -1,5 +1,6 @@
 package jiraiyah.stripblock.block.entity;
 
+import jiraiyah.stripblock.data.StripperData;
 import jiraiyah.stripblock.recipe.StripperBlockRecipe;
 import jiraiyah.stripblock.screen.StripperBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -84,26 +86,25 @@ public class StripperBlockEntity extends BlockEntity implements ExtendedScreenHa
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt)
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup)
     {
-        super.writeNbt(nbt);
-        Inventories.writeNbt(nbt, inventory);
+        super.writeNbt(nbt, registryLookup);
+        Inventories.writeNbt(nbt, inventory, registryLookup);
         nbt.putInt("stripper_block.progress", progress);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt)
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup)
     {
-        super.readNbt(nbt);
-        Inventories.readNbt(nbt, inventory);
+        super.readNbt(nbt, registryLookup);
+        Inventories.readNbt(nbt, inventory, registryLookup);
         progress = nbt.getInt("stripper_block.progress");
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf)
+    public Object getScreenOpeningData(ServerPlayerEntity player)
     {
-        // Sending Block Entity position in the world from server to client and reverse
-        buf.writeBlockPos(this.pos);
+        return new StripperData(pos);
     }
 
     @Override
@@ -189,17 +190,6 @@ public class StripperBlockEntity extends BlockEntity implements ExtendedScreenHa
     private void increaseCraftProgress()
     {
         this.progress++;
-        //Blocks.STRIPPED_BAMBOO_BLOCK <- Blocks.BAMBOO_BLOCK
-        //Blocks.STRIPPED_ACACIA_LOG <- Blocks.ACACIA_LOG
-        //Blocks.STRIPPED_BIRCH_LOG <- Blocks.BIRCH_LOG
-        //Blocks.STRIPPED_CHERRY_LOG <- Blocks.CHERRY_LOG
-        //Blocks.STRIPPED_CRIMSON_STEM <- Blocks.CRIMSON_STEM
-        //Blocks.STRIPPED_DARK_OAK_LOG <- Blocks.DARK_OAK_LOG
-        //Blocks.STRIPPED_JUNGLE_LOG <- Blocks.JUNGLE_LOG
-        //Blocks.STRIPPED_MANGROVE_LOG <- Blocks.MANGROVE_LOG
-        //Blocks.STRIPPED_OAK_LOG <- Blocks.OAK_LOG
-        //Blocks.STRIPPED_SPRUCE_LOG <- Blocks.SPRUCE_LOG
-        //Blocks.STRIPPED_WARPED_STEM <- Blocks.WARPED_STEM
     }
 
     private boolean isCraftingFinished()
