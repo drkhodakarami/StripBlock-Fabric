@@ -19,18 +19,20 @@ public class StripperBlockScreenHandler extends ScreenHandler
 {
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
-    //public final StripperBlockEntity blockEntity;
+    public final StripperBlockEntity blockEntity;
 
     public StripperBlockScreenHandler(int syncId, PlayerInventory inventory)
     {
-        this(syncId, inventory, new ArrayPropertyDelegate(2));
+        this(syncId, inventory, null, new ArrayPropertyDelegate(2));
     }
 
-    public StripperBlockScreenHandler(int syncId, PlayerInventory playerInventory, PropertyDelegate propertyDelegate)
+    public StripperBlockScreenHandler(int syncId, PlayerInventory playerInventory, StripperBlockEntity blockEntity, PropertyDelegate propertyDelegate)
     {
         super(ModScreenHandlers.STRIPPER_SCREEN_HANDLER, syncId);
         checkDataCount(propertyDelegate, StripperBlockEntity.TOTAL_DELEGATE_COUNT);
-        this.inventory = new SimpleInventory(StripperBlockEntity.TOTAL_SLOTS);
+        this.blockEntity = blockEntity;
+        this.inventory = blockEntity == null ? new SimpleInventory(StripperBlockEntity.TOTAL_SLOTS) : (Inventory) blockEntity;
+
         playerInventory.onOpen(playerInventory.player);
         this.propertyDelegate = propertyDelegate;
 

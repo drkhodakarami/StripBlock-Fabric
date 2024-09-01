@@ -124,7 +124,7 @@ public class StripperBlockEntity extends BlockEntity implements NamedScreenHandl
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new StripperBlockScreenHandler(syncId, playerInventory, this.propertyDelegate);
+        return new StripperBlockScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 
     @Override
