@@ -18,7 +18,8 @@
     }
   },
   "result": {
-    "item": "strip_block:stripper_block"
+    "id": "strip_block:stripper_block",
+    "count": 1
   },
   "show_notification": true
 }

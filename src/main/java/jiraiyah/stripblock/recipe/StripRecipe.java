@@ -1,15 +1,17 @@
 package jiraiyah.stripblock.recipe;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.*;
-import net.minecraft.recipe.book.CookingRecipeCategory;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
+// Big shout and thanks to "ZeroNoRyouki" for helping me on finding proper solution for custom recipe/serializer
 public class StripRecipe implements Recipe<SingleStackRecipeInput>
 {
     protected final CraftingRecipeCategory category;
