@@ -1,12 +1,12 @@
 {
   "type": "strip_block:wood_stripping",
-  "ingredients": [
-    {
-      "item": "minecraft:bamboo_block"
-    }
-  ],
-  "output": {
-    "item": "minecraft:stripped_bamboo_block",
-    "count": 1
+  "category": "misc",
+  "processTime": 0,
+  "experience": 0.0,
+  "ingredient": {
+    "item": "minecraft:bamboo_block"
+  },
+  "result": {
+    "id": "minecraft:stripped_bamboo_block"
   }
 }

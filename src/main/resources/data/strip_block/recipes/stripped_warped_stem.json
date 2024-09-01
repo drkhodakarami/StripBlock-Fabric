@@ -1,12 +1,12 @@
 {
   "type": "strip_block:wood_stripping",
-  "ingredients": [
-    {
-      "item": "minecraft:warped_stem"
-    }
-  ],
-  "output": {
-    "item": "minecraft:stripped_warped_stem",
-    "count": 1
+  "category": "misc",
+  "processTime": 0,
+  "experience": 0.0,
+  "ingredient": {
+    "item": "minecraft:warped_stem"
+  },
+  "result": {
+    "id": "minecraft:stripped_warped_stem"
   }
 }

@@ -1,12 +1,12 @@
 {
   "type": "strip_block:wood_stripping",
-  "ingredients": [
-    {
-      "item": "minecraft:birch_log"
-    }
-  ],
-  "output": {
-    "item": "minecraft:stripped_birch_log",
-    "count": 1
+  "category": "misc",
+  "processTime": 0,
+  "experience": 0.0,
+  "ingredient": {
+    "item": "minecraft:birch_log"
+  },
+  "result": {
+    "id": "minecraft:stripped_birch_log"
   }
 }
