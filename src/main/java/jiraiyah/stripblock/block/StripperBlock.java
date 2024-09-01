@@ -43,11 +43,10 @@ public class StripperBlock extends BlockWithEntity implements BlockEntityProvide
         world.playSound(player, pos, SoundEvents.BLOCK_CHERRY_WOOD_STEP, SoundCategory.BLOCKS, 1f, 1f);
         if (!world.isClient)
         {
-            NamedScreenHandlerFactory screenHandlerFactory = ((StripperBlockEntity) world.getBlockEntity(pos));
-
-            if (screenHandlerFactory != null)
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if(blockEntity instanceof StripperBlockEntity)
             {
-                player.openHandledScreen(screenHandlerFactory);
+                player.openHandledScreen((NamedScreenHandlerFactory) blockEntity);
             }
         }
         return ActionResult.SUCCESS;

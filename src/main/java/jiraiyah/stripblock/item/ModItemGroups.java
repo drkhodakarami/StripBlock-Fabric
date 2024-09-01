@@ -10,6 +10,8 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import static jiraiyah.stripblock.Reference.logN;
+
 public class ModItemGroups
 {
     /*public static final ItemGroup RUBY_Group = Registry.register(Registries.ITEM_GROUP,
@@ -23,6 +25,6 @@ public class ModItemGroups
 
     public static void register()
     {
-        StripBlock.LOGGER.info(">>> Registering Item Groups for : " + StripBlock.ModID);
+        logN(">>> Registering Item Groups");
     }
 }

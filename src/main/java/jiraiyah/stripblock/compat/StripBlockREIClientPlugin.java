@@ -1,7 +1,8 @@
 package jiraiyah.stripblock.compat;
 
 import jiraiyah.stripblock.block.ModBlocks;
-import jiraiyah.stripblock.recipe.StripperBlockRecipe;
+import jiraiyah.stripblock.recipe.ModRecipes;
+import jiraiyah.stripblock.recipe.StripRecipe;
 import jiraiyah.stripblock.screen.StripperBlockScreen;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
@@ -22,7 +23,7 @@ public class StripBlockREIClientPlugin implements REIClientPlugin
     @Override
     public void registerDisplays(DisplayRegistry registry)
     {
-        registry.registerRecipeFiller(StripperBlockRecipe.class, StripperBlockRecipe.Type.INSTANCE, StripperBlockDisplay::new);
+        registry.registerRecipeFiller(StripRecipe.class, ModRecipes.WOOD_STRIP_TYPE, StripperBlockDisplay::new);
     }
 
     @Override

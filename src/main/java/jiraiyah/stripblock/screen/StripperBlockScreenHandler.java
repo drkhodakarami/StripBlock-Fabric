@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ArrayPropertyDelegate;
@@ -18,22 +19,20 @@ public class StripperBlockScreenHandler extends ScreenHandler
 {
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
-    public final StripperBlockEntity blockEntity;
+    //public final StripperBlockEntity blockEntity;
 
-    public StripperBlockScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf)
+    public StripperBlockScreenHandler(int syncId, PlayerInventory inventory)
     {
-        this(syncId, inventory, inventory.player.getWorld().getBlockEntity(buf.readBlockPos()),
-                new ArrayPropertyDelegate(2));
+        this(syncId, inventory, new ArrayPropertyDelegate(2));
     }
 
-    public StripperBlockScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate propertyDelegate)
+    public StripperBlockScreenHandler(int syncId, PlayerInventory playerInventory, PropertyDelegate propertyDelegate)
     {
         super(ModScreenHandlers.STRIPPER_SCREEN_HANDLER, syncId);
-        checkSize((Inventory) blockEntity, 2);
-        this.inventory = (Inventory) blockEntity;
+        checkDataCount(propertyDelegate, StripperBlockEntity.TOTAL_DELEGATE_COUNT);
+        this.inventory = new SimpleInventory(StripperBlockEntity.TOTAL_SLOTS);
         playerInventory.onOpen(playerInventory.player);
         this.propertyDelegate = propertyDelegate;
-        this.blockEntity = (StripperBlockEntity) blockEntity;
 
         this.addSlot(new InputSlot(inventory, 0, 80, 11));
         this.addSlot(new OutputSlot(inventory, 1, 80, 59));
@@ -89,15 +88,15 @@ public class StripperBlockScreenHandler extends ScreenHandler
     }
 
     private void addPlayerInventory(PlayerInventory playerInventory) {
-        for (int i = 0; i < 3; ++i) {
-            for (int l = 0; l < 9; ++l) {
+        for (int i = 0; i < 3; i++) {
+            for (int l = 0; l < 9; l++) {
                 this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
+        for (int i = 0; i < 9; i++) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
     }

@@ -1,7 +1,8 @@
 package jiraiyah.stripblock.block.entity;
 
 import jiraiyah.stripblock.data.StripperData;
-import jiraiyah.stripblock.recipe.StripperBlockRecipe;
+import jiraiyah.stripblock.recipe.ModRecipes;
+import jiraiyah.stripblock.recipe.StripRecipe;
 import jiraiyah.stripblock.screen.StripperBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -9,15 +10,19 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.RecipeManager;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.input.SingleStackRecipeInput;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
@@ -26,11 +31,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
-public class StripperBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory
+public class StripperBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory
 {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
+    private final RecipeManager.MatchGetter<SingleStackRecipeInput, StripRecipe> matchGetter;
 
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
@@ -39,9 +43,13 @@ public class StripperBlockEntity extends BlockEntity implements ExtendedScreenHa
     private int progress = 0;
     private int max_progress = 9;
 
+    public static final int TOTAL_SLOTS = 2;
+    public static final int TOTAL_DELEGATE_COUNT = 2;
+
     public StripperBlockEntity(BlockPos pos, BlockState state)
     {
         super(ModBlockEntities.STRIPPER_BLOCK_ENTITY, pos, state);
+        this.matchGetter = RecipeManager.createCachedMatchGetter(ModRecipes.WOOD_STRIP_TYPE);
         this.propertyDelegate = new PropertyDelegate()
         {
             @Override
@@ -86,6 +94,12 @@ public class StripperBlockEntity extends BlockEntity implements ExtendedScreenHa
     }
 
     @Override
+    public Text getDisplayName()
+    {
+        return Text.translatable("strip_block.strip_block_entity");
+    }
+
+    @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup)
     {
         super.writeNbt(nbt, registryLookup);
@@ -101,21 +115,16 @@ public class StripperBlockEntity extends BlockEntity implements ExtendedScreenHa
         progress = nbt.getInt("stripper_block.progress");
     }
 
-    @Override
+    /*@Override
     public Object getScreenOpeningData(ServerPlayerEntity player)
     {
         return new StripperData(pos);
-    }
-
-    @Override
-    public Text getDisplayName() {
-        return Text.translatable("strip_block.strip_block_entity");
-    }
+    }*/
 
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new StripperBlockScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+        return new StripperBlockScreenHandler(syncId, playerInventory, this.propertyDelegate);
     }
 
     @Override
@@ -123,29 +132,42 @@ public class StripperBlockEntity extends BlockEntity implements ExtendedScreenHa
         return inventory;
     }
 
+
+
     public void tick(World world, BlockPos pos, BlockState state)
     {
         if(world.isClient)
             return;
 
+        if(inventory.getFirst().isEmpty())
+            return;
+
+        StripperBlockEntity blockEntity = null;
+        if(world.getBlockEntity(pos) instanceof StripperBlockEntity)
+            blockEntity = (StripperBlockEntity)world.getBlockEntity(pos);
+
+        if(blockEntity == null)
+            return;
+
         if(isOutputSlotReceivable())
         {
-            if(this.hasRecipe())
+            if(this.hasRecipe(blockEntity, world.getRegistryManager()))
             {
                 this.increaseCraftProgress();
-                markDirty(world, pos, state);
                 if(isCraftingFinished())
                 {
-                    this.craftItem();
+                    this.craftItem(blockEntity, world.getRegistryManager());
                     this.resetProgress();
+                    markDirty(world, pos, state);
                 }
             }
-            else
+            else if(blockEntity.progress != 0)
             {
                 this.resetProgress();
+                markDirty(world, pos, state);
             }
         }
-        else
+        else if(blockEntity.progress != 0)
         {
             this.resetProgress();
             markDirty(world, pos, state);
@@ -158,22 +180,13 @@ public class StripperBlockEntity extends BlockEntity implements ExtendedScreenHa
                 this.getStack(OUTPUT_SLOT).getCount() < this.getStack(OUTPUT_SLOT).getMaxCount();
     }
 
-    private boolean hasRecipe()
+    private boolean hasRecipe(StripperBlockEntity blockEntity, DynamicRegistryManager registryManager)
     {
-        Optional<RecipeEntry<StripperBlockRecipe>> recipe = getCurrentRecipe();
+        RecipeEntry<?> recipeEntry = (RecipeEntry<?>)blockEntity.matchGetter.getFirstMatch(new SingleStackRecipeInput(blockEntity.inventory.getFirst()), world).orElse(null);
 
-        return recipe.isPresent() &&
-                canInsertAmountToOutput(recipe.get().value().getResult(null)) &&
-                canInsertItemToOutput(recipe.get().value().getResult(null).getItem());
-    }
-
-    private Optional<RecipeEntry<StripperBlockRecipe>> getCurrentRecipe()
-    {
-        SimpleInventory inv = new SimpleInventory(this.size());
-        for (int i = 0; i < this.size(); i++)
-            inv.setStack(i, this.getStack(i));
-
-        return getWorld().getRecipeManager().getFirstMatch(StripperBlockRecipe.Type.INSTANCE, inv, getWorld());
+        return recipeEntry != null &&
+                canInsertAmountToOutput(recipeEntry.value().getResult(registryManager)) &&
+                canInsertItemToOutput(recipeEntry.value().getResult(registryManager).getItem());
     }
 
     private boolean canInsertAmountToOutput(ItemStack result)
@@ -197,14 +210,18 @@ public class StripperBlockEntity extends BlockEntity implements ExtendedScreenHa
         return progress >= max_progress;
     }
 
-    private void craftItem()
+    private void craftItem(StripperBlockEntity blockEntity, DynamicRegistryManager registryManager)
     {
-        Optional<RecipeEntry<StripperBlockRecipe>> recipe = getCurrentRecipe();
+        RecipeEntry<?> recipeEntry = (RecipeEntry<?>) blockEntity.matchGetter
+                .getFirstMatch(new SingleStackRecipeInput(blockEntity.inventory.getFirst()), world).orElse(null);
+        if(recipeEntry != null)
+        {
+            this.removeStack(INPUT_SLOT, 1);
 
-        this.removeStack(INPUT_SLOT, 1);
-
-        this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().value().getResult(null).getItem(),
-                getStack(OUTPUT_SLOT).getCount() + recipe.get().value().getResult(null).getCount()));
+            this.setStack(OUTPUT_SLOT,
+                          new ItemStack(recipeEntry.value().getResult(registryManager).getItem(),
+                                         getStack(OUTPUT_SLOT).getCount() + recipeEntry.value().getResult(registryManager).getCount()));
+        }
     }
 
     private void resetProgress()

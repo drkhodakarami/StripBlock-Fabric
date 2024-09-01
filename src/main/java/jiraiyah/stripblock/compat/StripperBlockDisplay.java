@@ -1,6 +1,6 @@
 package jiraiyah.stripblock.compat;
 
-import jiraiyah.stripblock.recipe.StripperBlockRecipe;
+import jiraiyah.stripblock.recipe.StripRecipe;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
@@ -19,13 +19,13 @@ public class StripperBlockDisplay  extends BasicDisplay
         super(inputs, outputs);
     }
 
-    public StripperBlockDisplay(RecipeEntry<StripperBlockRecipe> recipe)
+    public StripperBlockDisplay(RecipeEntry<StripRecipe> recipe)
     {
         super(getInputList(recipe.value()),
                 List.of(EntryIngredient.of(EntryStacks.of(recipe.value().getResult(null)))));
     }
 
-    private static List<EntryIngredient> getInputList(StripperBlockRecipe recipe)
+    private static List<EntryIngredient> getInputList(StripRecipe recipe)
     {
         if(recipe == null) return Collections.emptyList();
         List<EntryIngredient> list = new ArrayList<>();

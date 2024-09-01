@@ -1,7 +1,6 @@
 package jiraiyah.stripblock.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import jiraiyah.stripblock.StripBlock;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
@@ -9,9 +8,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import static jiraiyah.stripblock.Reference.identifier;
+
 public class StripperBlockScreen extends HandledScreen<StripperBlockScreenHandler>
 {
-    private static final Identifier TEXTURE = new Identifier(StripBlock.ModID, "textures/gui/stripper_gui.png");
+    private static final Identifier TEXTURE = identifier("textures/gui/stripper_gui.png");
 
     public StripperBlockScreen(StripperBlockScreenHandler handler, PlayerInventory inventory, Text title)
     {
