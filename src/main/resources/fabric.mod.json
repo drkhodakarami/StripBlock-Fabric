@@ -12,25 +12,22 @@
 		"sources": "https://github.com/drkhodakarami/StripBlock-Fabric"
 	},
 	"license": "MIT",
-	"icon": "assets/strip_block/icon.png",
+	"icon": "assets/wood_stripper/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"jiraiyah.stripblock.StripBlock"
+			"jiraiyah.wood_stripper.Main"
 		],
 		"fabric-datagen": [
-			"jiraiyah.stripblock.StripBlockDataGenerator"
+			"jiraiyah.wood_stripper.DataGen"
 		],
 		"client": [
-			"jiraiyah.stripblock.StripBlockClient"
-		],
-		"rei_client": [
-			"jiraiyah.stripblock.compat.StripBlockREIClientPlugin"
+			"jiraiyah.wood_stripper.Client"
 		]
 	},
 	"depends": {
-		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.21.1",
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.21.3",
 		"java": ">=21",
 		"fabric-api": "*"
 	},

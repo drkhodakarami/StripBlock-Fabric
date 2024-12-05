@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "wood_stripper:block/stripper_block"
+    }
+  }
+}

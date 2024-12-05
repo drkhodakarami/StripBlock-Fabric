@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.8-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -12,6 +12,8 @@ base {
 
 repositories {
 	maven { url "https://maven.shedaniel.me" }
+	mavenCentral()
+	maven { url 'https://repo.repsy.io/mvn/jiraiyah/jilibs' }
 }
 
 fabricApi {
@@ -36,6 +38,12 @@ dependencies {
 
 	// Architectury Compatibility Dependency
 	modApi "dev.architectury:architectury-fabric:${project.architectury_version}"
+	
+	modImplementation include("jiraiyah.logger:jilogger:${jilogger_version}")
+    modImplementation include("jiraiyah.reference:jireference:${jireference_version}")
+    modImplementation include("jiraiyah.register:jiregister:${jiregister_version}")
+    modImplementation include("jiraiyah.jiralib:jiralib:${jiralib_version}")
+	modImplementation include("jiraiyah.inventory:jinventory:${jinventory_version}")
 }
 
 processResources {

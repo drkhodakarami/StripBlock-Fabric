@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "xix",
+    "ici",
+    "xix"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:stone_axe"
+    },
+    "i": {
+      "item": "minecraft:iron_bars"
+    },
+    "c": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "result": {
+    "id": "wood_stripper:stripper_block",
+    "count": 1
+  },
+  "show_notification": true
+}
