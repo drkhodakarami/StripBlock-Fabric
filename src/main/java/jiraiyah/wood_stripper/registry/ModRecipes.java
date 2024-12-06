@@ -21,8 +21,9 @@ import static jiraiyah.wood_stripper.Main.LOGGER;
 public class ModRecipes
 {
     public static RecipeType<StripRecipe> WOOD_STRIP_TYPE;
-
     public static RecipeSerializer<StripRecipe> WOOD_STRIP_SERIALIZER;
+
+    public static final String WOOD_STRIPPING = "wood_stripping";
 
     public static void init()
     {
@@ -30,16 +31,16 @@ public class ModRecipes
 
         Registers.init(ModID);
 
-        WOOD_STRIP_TYPE = register("wood_stripping",
+        WOOD_STRIP_TYPE = register(WOOD_STRIPPING,
                                    new RecipeType<>()
                                    {
                                        public String toString()
                                        {
-                                           return "wood_stripping";
+                                           return WOOD_STRIPPING;
                                        }
                                    });
 
-        WOOD_STRIP_SERIALIZER = register("wood_stripping", new StripSerializer());
+        WOOD_STRIP_SERIALIZER = register(WOOD_STRIPPING, new StripSerializer());
 
     }
 

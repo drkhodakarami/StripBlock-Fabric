@@ -1,0 +1,11 @@
+{
+  "type": "wood_stripper:wood_stripping",
+  "experience": 0.0,
+  "ingredient": {
+    "entries": "minecraft:acacia_log"
+  },
+  "processTime": 0,
+  "result": {
+    "id": "minecraft:stripped_acacia_log"
+  }
+}

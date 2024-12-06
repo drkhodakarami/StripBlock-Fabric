@@ -22,27 +22,49 @@
  * SOFTWARE.                                                                       *
  ***********************************************************************************/
 
-package jiraiyah.wood_stripper;
+package jiraiyah.wood_stripper.datagen;
 
-import jiraiyah.reference.JiReference;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jiraiyah.wood_stripper.Main;
+import jiraiyah.wood_stripper.registry.ModBlocks;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.BlockTags;
 
-public class Reference extends JiReference
+import java.util.concurrent.CompletableFuture;
+
+/**
+ * The `ModBlockTagProvider` class is responsible for generating block tag data for the mod.
+ * It extends the `FabricTagProvider.BlockTagProvider` to utilize the Fabric API's data generation capabilities.
+ * This class defines various block tags and associates them with specific blocks from the mod.
+ */
+public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider
 {
-    public Reference(String mod_ID)
+    /**
+     * Constructs a new `ModBlockTagProvider` instance.
+     *
+     * @param output           The `FabricDataOutput` instance used for data generation output.
+     * @param registriesFuture A `CompletableFuture` that provides access to the `RegistryWrapper.WrapperLookup`,
+     *                         which contains registry data needed for tag configuration.
+     */
+    public ModBlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture)
     {
-        super(mod_ID);
+        super(output, registriesFuture);
     }
 
-    public final TagKey<Item> STRIPPABLES = createItemCommonTag("strippables");
-    public final TagKey<Item> STRIPPED = createItemCommonTag("stripped");
+    /**
+     * Configures the block tags by associating specific blocks with predefined tags.
+     * This method is called during the data generation process to define the relationships
+     * between blocks and their respective tags.
+     *
+     * @param arg The `RegistryWrapper.WrapperLookup` instance providing access to the registry data.
+     */
+    @Override
+    protected void configure(RegistryWrapper.WrapperLookup arg)
+    {
+        Main.LOGGER.logRGB256("Generating Block Tag Data", 0, 255, 0);
+
+        getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
+                .add(ModBlocks.STRIPPER_BLOCK);
+    }
 }

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "minecraft:iron_bars",
+    "C": "minecraft:crafting_table",
+    "X": "minecraft:stone_axe"
+  },
+  "pattern": [
+    "XBX",
+    "BCB",
+    "XBX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "wood_stripper:stripper_block"
+  }
+}

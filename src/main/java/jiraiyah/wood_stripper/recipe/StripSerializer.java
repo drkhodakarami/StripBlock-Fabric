@@ -14,8 +14,6 @@ import net.minecraft.recipe.input.RecipeInput;
 
 public class StripSerializer implements RecipeSerializer<StripRecipe>
 {
-    public static final StripSerializer INSTANCE = new StripSerializer();
-
     @Override
     public MapCodec<StripRecipe> codec()
     {

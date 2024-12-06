@@ -9,6 +9,8 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.slot.Slot;
 
+import static jiraiyah.wood_stripper.Main.REFERENCE;
+
 public class InputSlot extends PredicateSlot
 {
 
@@ -20,9 +22,11 @@ public class InputSlot extends PredicateSlot
     @Override
     public boolean canInsert(ItemStack stack)
     {
-        return stack.isIn(ItemTags.LOGS) ||
+        return (stack.isIn(ItemTags.LOGS) ||
+               stack.isIn(REFERENCE.STRIPPABLES) ||
                stack.isOf(Items.BAMBOO_BLOCK) ||
                stack.isOf(Items.CRIMSON_STEM) ||
-               stack.isOf(Items.WARPED_STEM);
+               stack.isOf(Items.WARPED_STEM)) &&
+               !stack.isIn(REFERENCE.STRIPPED);
     }
 }

@@ -1,5 +1,6 @@
 package jiraiyah.wood_stripper.blockentity;
 
+import jiraiyah.jinventory.OutputSimpleInventory;
 import jiraiyah.jinventory.SyncingSimpleInventory;
 import jiraiyah.jinventory.blockentity.AbstractInventoryBE;
 import jiraiyah.jiralib.interfaces.ISync;
@@ -10,6 +11,7 @@ import jiraiyah.wood_stripper.registry.ModBlockEntities;
 import jiraiyah.wood_stripper.registry.ModRecipes;
 import jiraiyah.wood_stripper.screen.StripperBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -36,9 +38,6 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
 {
     public static final Text TITLE = REFERENCE.translateContainer("wood.stripper.screen");
 
-    private final SyncingSimpleInventory input;
-    private final SyncingSimpleInventory output;
-
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
     private int max_progress = 9;
@@ -49,10 +48,8 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
     {
         super(ModBlockEntities.STRIPPER_BLOCK_ENTITY, pos, state);
 
-        input = new SyncingSimpleInventory(this, 1);
-        output = new SyncingSimpleInventory(this, 1);
-        getInventory().addInventory(output, Direction.DOWN);
-        getInventory().addInventory(input, null);
+        getInventory().addSyncInventory(this, 1);
+        addOutputInventory(1, Direction.DOWN);
 
         this.propertyDelegate = new PropertyDelegate()
         {
@@ -100,7 +97,9 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
     @Override
     public List<ISync> getSyncables()
     {
-        return List.of(input, output);
+        return List.of(
+                (SyncingSimpleInventory) getInventory().getInventory(0),
+                (OutputSimpleInventory) getInventory().getInventory(1));
     }
 
     @Override
@@ -126,18 +125,38 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
     @Override
     public void onTick()
     {
-        if(world == null || !world.isClient ||
-           !(world instanceof ServerWorld sw))
+        if(world == null || world.isClient)
             return;
 
-        if(input.getStack(0).isEmpty())
+        if(!(world instanceof ServerWorld sw))
+        {
+            progress = 0;
             return;
+        }
+
+        var input = getInventory().getInventory(0);
+        var output= getInventory().getInventory(1);
+
+        if(input == null || output == null)
+        {
+            progress = 0;
+            return;
+        }
+
+        if(input.getStack(0).isEmpty())
+        {
+            progress = 0;
+            return;
+        }
 
 
         Optional<RecipeEntry<StripRecipe>> recipeEntry = getCurrentRecipe(sw);
 
         if(recipeEntry.isEmpty())
+        {
+            progress = 0;
             return;
+        }
 
         ItemStack craftResult = recipeEntry.get().value().craft(getInventory().getRecipeInventory(), world.getRegistryManager() );
 
@@ -148,8 +167,8 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
                 this.progress++;
                 if(this.progress >= this.max_progress)
                 {
-                    this.input.removeStack(0, 1);
-                    this.output.setStack(0,
+                    input.removeStack(0, 1);
+                    output.setStack(0,
                                   new ItemStack(craftResult.getItem(),
                                                 output.getStack(0).getCount() + craftResult.getCount()));
                     this.progress = 0;
@@ -171,18 +190,32 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
 
     private boolean outputCanAccept(ItemStack item)
     {
-        var stack = this.output.getStack(0);
+        var output = getInventory().getInventory(1);
+        if(output == null)
+            return false;
+        var stack = output.getStack(0);
         return stack.isEmpty() ||
                (stack.isOf(item.getItem()) && stack.getCount() <= stack.getMaxCount() - item.getCount());
     }
 
     private Optional<RecipeEntry<StripRecipe>> getCurrentRecipe(ServerWorld sw)
     {
+        var p1 = sw.getRecipeManager();
+        var p = getInventory();
+        var q = p.getRecipeInventory();
+        var p2 = p1.getFirstMatch(ModRecipes.WOOD_STRIP_TYPE, q, this.world);
         return sw.getRecipeManager().getFirstMatch(ModRecipes.WOOD_STRIP_TYPE, getInventory().getRecipeInventory(), this.world);
     }
 
     public PropertyDelegate getDelegate()
     {
         return this.propertyDelegate;
+    }
+
+    public InventoryStorage getProvider(Direction direction)
+    {
+        if(direction == Direction.DOWN)
+            return getInventory().getStorage(Direction.DOWN);
+        return getInventory().getStorage(null);
     }
 }

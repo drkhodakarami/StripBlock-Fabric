@@ -43,8 +43,8 @@ public class StripperBlockScreenHandler extends ScreenHandler
 
         this.blockEntity = blockEntity;
 
-        this.output = blockEntity.getInventory().getInventory(0);
-        this.input = blockEntity.getInventory().getInventory(1);
+        this.output = blockEntity.getInventory().getInventory(1);
+        this.input = blockEntity.getInventory().getInventory(0);
         this.context = ScreenHandlerContext.create(blockEntity.getWorld(), blockEntity.getPos());
 
         playerInventory.onOpen(playerInventory.player);
@@ -70,14 +70,14 @@ public class StripperBlockScreenHandler extends ScreenHandler
         if (slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
-            if (invSlot < this.input.size() + this.output.size())
+            if (invSlot < this.input.size())
             {
-                if (!this.insertItem(originalStack, this.input.size() + this.output.size(),
+                if (!this.insertItem(originalStack, this.input.size(),
                                      this.slots.size(), true))
                     return ItemStack.EMPTY;
             }
             else if (!this.insertItem(originalStack, 0,
-                                      this.input.size() + this.output.size(), false))
+                                      this.input.size(), false))
                 return ItemStack.EMPTY;
 
             if (originalStack.isEmpty())
@@ -97,7 +97,7 @@ public class StripperBlockScreenHandler extends ScreenHandler
 
     public boolean isCrafting()
     {
-        return propertyDelegate.get(0) > 0;
+        return propertyDelegate.get(0) < propertyDelegate.get(1);
     }
 
     public int getScaledProgress(int progressArrowSize)

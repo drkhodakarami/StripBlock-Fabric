@@ -45,7 +45,7 @@ public class StripperBlockScreenRenderer extends HandledScreen<StripperBlockScre
         {
             // 26 ==> This is the width in pixels of your arrow
             context.drawTexture(RenderLayer::getGuiTextured, TEXTURE,
-                                x + 85, y + 30, 176, 0,
+                                x + 75, y + 18, 176, 0,
                                 handler.getScaledProgress(26), 8,
                                 256, 256);
         }
