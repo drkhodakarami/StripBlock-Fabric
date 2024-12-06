@@ -40,7 +40,7 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
 
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
-    private int max_progress = 9;
+    private int max_progress = 0;
 
     public static final int TOTAL_DELEGATE_COUNT = 2;
 
@@ -48,8 +48,8 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
     {
         super(ModBlockEntities.STRIPPER_BLOCK_ENTITY, pos, state);
 
-        getInventory().addSyncInventory(this, 1);
-        addOutputInventory(1, Direction.DOWN);
+        getInventory().addInventory(new SyncingSimpleInventory(this, 1));
+        getInventory().addInventory(new OutputSimpleInventory(this, 1), Direction.DOWN);
 
         this.propertyDelegate = new PropertyDelegate()
         {
@@ -143,12 +143,11 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
             return;
         }
 
-        if(input.getStack(0).isEmpty())
+        if(input.isEmpty())
         {
             progress = 0;
             return;
         }
-
 
         Optional<RecipeEntry<StripRecipe>> recipeEntry = getCurrentRecipe(sw);
 
@@ -158,33 +157,34 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
             return;
         }
 
-        ItemStack craftResult = recipeEntry.get().value().craft(getInventory().getRecipeInventory(), world.getRegistryManager() );
+        this.max_progress = recipeEntry.get().value().processTime();
 
-        if(outputCanAccept(craftResult))
+        if(!outputCanAccept(recipeEntry.get().value().result()))
         {
-            if(!craftResult.isEmpty())
+            progress = 0;
+            return;
+        }
+
+        this.progress++;
+        if(this.progress >= this.max_progress)
+        {
+            ItemStack craftResult = recipeEntry.get().value().craft(getInventory().getRecipeInventory(), world.getRegistryManager());
+            if (outputCanAccept(craftResult))
             {
-                this.progress++;
-                if(this.progress >= this.max_progress)
+                if (!craftResult.isEmpty())
                 {
-                    input.removeStack(0, 1);
                     output.setStack(0,
-                                  new ItemStack(craftResult.getItem(),
-                                                output.getStack(0).getCount() + craftResult.getCount()));
+                                    new ItemStack(craftResult.getItem(),
+                                                  output.getStack(0).getCount() + craftResult.getCount()));
                     this.progress = 0;
                     update();
                 }
             }
-            else if(this.progress != 0)
+            else if (this.progress != 0)
             {
                 this.progress = 0;
                 update();
             }
-        }
-        else if(this.progress != 0)
-        {
-            this.progress = 0;
-            update();
         }
     }
 
@@ -200,10 +200,6 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
 
     private Optional<RecipeEntry<StripRecipe>> getCurrentRecipe(ServerWorld sw)
     {
-        var p1 = sw.getRecipeManager();
-        var p = getInventory();
-        var q = p.getRecipeInventory();
-        var p2 = p1.getFirstMatch(ModRecipes.WOOD_STRIP_TYPE, q, this.world);
         return sw.getRecipeManager().getFirstMatch(ModRecipes.WOOD_STRIP_TYPE, getInventory().getRecipeInventory(), this.world);
     }
 
@@ -214,8 +210,9 @@ public class StripperBlockEntity extends AbstractInventoryBE implements Extended
 
     public InventoryStorage getProvider(Direction direction)
     {
-        if(direction == Direction.DOWN)
-            return getInventory().getStorage(Direction.DOWN);
-        return getInventory().getStorage(null);
+        var storage = direction == Direction.DOWN
+                      ? getInventoryStorage(direction)
+                      : getInventoryStorage(null);
+        return storage;
     }
 }

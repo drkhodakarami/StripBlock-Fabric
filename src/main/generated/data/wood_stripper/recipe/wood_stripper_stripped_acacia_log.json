@@ -4,7 +4,7 @@
   "ingredient": {
     "entries": "minecraft:acacia_log"
   },
-  "processTime": 0,
+  "processTime": 8,
   "result": {
     "id": "minecraft:stripped_acacia_log"
   }

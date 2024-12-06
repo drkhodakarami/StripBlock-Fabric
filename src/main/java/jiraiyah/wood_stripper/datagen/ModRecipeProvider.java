@@ -112,47 +112,47 @@ public class ModRecipeProvider extends FabricRecipeProvider
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.ACACIA_LOG.asItem()),
                                Items.STRIPPED_ACACIA_LOG.getDefaultStack(),
-                               0.0f, 0);
+                               0.0f, 8);
 
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.BAMBOO_BLOCK.asItem()),
-                               Items.STRIPPED_BAMBOO_BLOCK.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_BAMBOO_BLOCK.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.BIRCH_LOG.asItem()),
-                               Items.STRIPPED_BIRCH_LOG.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_BIRCH_LOG.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.CHERRY_LOG.asItem()),
-                               Items.STRIPPED_CHERRY_LOG.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_CHERRY_LOG.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.CRIMSON_STEM.asItem()),
-                               Items.STRIPPED_CRIMSON_STEM.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_CRIMSON_STEM.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.DARK_OAK_LOG.asItem()),
-                               Items.STRIPPED_DARK_OAK_LOG.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_DARK_OAK_LOG.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.JUNGLE_LOG.asItem()),
-                               Items.STRIPPED_JUNGLE_LOG.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_JUNGLE_LOG.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.MANGROVE_LOG.asItem()),
-                               Items.STRIPPED_MANGROVE_LOG.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_MANGROVE_LOG.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.OAK_LOG.asItem()),
-                               Items.STRIPPED_OAK_LOG.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_OAK_LOG.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.SPRUCE_LOG.asItem()),
-                               Items.STRIPPED_SPRUCE_LOG.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_SPRUCE_LOG.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.WARPED_STEM.asItem()),
-                               Items.STRIPPED_WARPED_STEM.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_WARPED_STEM.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.CRIMSON_HYPHAE.asItem()),
-                               Items.STRIPPED_CRIMSON_HYPHAE.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_CRIMSON_HYPHAE.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.WARPED_HYPHAE.asItem()),
-                               Items.STRIPPED_WARPED_HYPHAE.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_WARPED_HYPHAE.getDefaultStack(), 0.0f, 2);
                 offerStripping(exporter,
                                new ConfiguredIngredient(1, Blocks.PALE_OAK_LOG.asItem()),
-                               Items.STRIPPED_PALE_OAK_LOG.getDefaultStack(), 0.0f, 0);
+                               Items.STRIPPED_PALE_OAK_LOG.getDefaultStack(), 0.0f, 2);
             }
         };
     }

@@ -67,17 +67,19 @@ public class StripperBlockScreenHandler extends ScreenHandler
     {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
+        SimpleInventory inputInventory = this.blockEntity.getInventory().getRecipeInventory();
+
         if (slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
-            if (invSlot < this.input.size())
+            if (invSlot < inputInventory.size())
             {
-                if (!this.insertItem(originalStack, this.input.size(),
+                if (!this.insertItem(originalStack, inputInventory.size(),
                                      this.slots.size(), true))
                     return ItemStack.EMPTY;
             }
             else if (!this.insertItem(originalStack, 0,
-                                      this.input.size(), false))
+                                      inputInventory.size(), false))
                 return ItemStack.EMPTY;
 
             if (originalStack.isEmpty())
